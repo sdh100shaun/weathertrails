@@ -2,6 +2,7 @@ var map;
 var ajaxRequest;
 var plotlist;
 var plotlayers=[];
+var marker; 
 
 function get_location() {
   if (Modernizr.geolocation) {
@@ -32,15 +33,36 @@ function initmap(location) {
 		
 	 
 
-	L.marker(coords,{"draggable":true})
-	.on("dragend", function(e){
+	marker = L.marker(coords,{"draggable":true});
+
+	marker.on("dragend", function(e){
 		var marker = e.target;  
     	var result = marker.getLatLng();
-    	console.log(result.lat);
+    	console.log(get_popup(result));
 	})
-	.addTo(map)
-    .bindPopup('')
-    .openPopup();
+	
+	marker.addTo(map)
+    
+
+    get_popup(coords);
 }
 
+function get_popup(coords)
+{
+	console.log(coords);
+	$.getJSON( '/place/'+coords[0]+'/'+coords[1], function(data) {
+  		
+  		var template = "<h1>{{country}}</h1><p>{{woeid}}</p>";
+
+    	var html = Mustache.to_html(template, data.query.results.Result);
+    	console.log(html);
+    	marker.bindPopup(html).openPopup();;
+	})
+	.done(function() { console.log( "second success" ); })
+	.fail(function() { console.log( "error" ); })
+	.always(function() { console.log( "complete" ); });
+	
+	
+
+}
 

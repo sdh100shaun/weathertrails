@@ -36,9 +36,10 @@ function initmap(location) {
 	marker = L.marker(coords,{"draggable":true});
 
 	marker.on("dragend", function(e){
-		var marker = e.target;  
-    	var result = marker.getLatLng();
-    	console.log(get_popup(result));
+		var currentMarker = e.target;  
+    	var result = currentMarker.getLatLng();
+    	console.log(result);
+    	get_popup([result.lat,result.lng]);
 	})
 	
 	marker.addTo(map)
@@ -56,7 +57,8 @@ function get_popup(coords)
 
     	var html = Mustache.to_html(template, data.query.results.Result);
     	console.log(html);
-    	marker.bindPopup(html).openPopup();;
+    	marker.bindPopup(html).openPopup();
+    	//map.panTo(new L.LatLng(coords[0], coords[1]) );
 	})
 	.done(function() { console.log( "second success" ); })
 	.fail(function() { console.log( "error" ); })

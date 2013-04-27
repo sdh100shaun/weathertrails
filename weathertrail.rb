@@ -1,6 +1,7 @@
 
 require_relative 'models/User'
 require_relative 'models/place'
+require_relative 'models/weather'
 
 require "sinatra/reloader" if development?
 
@@ -52,6 +53,17 @@ class WeatherTrail < Sinatra::Base
         lng = params[:lon]
 
         place.get_place_info(lat,lng)
+
+    end
+
+    get '/weather/:lat/:lon' do 
+
+        lat = params[:lat]
+        lng = params[:lon]
+        weather = Weather.new(lat,lng)
+        weather.get_weather
+
+        weather.temp
 
     end
 

@@ -1,0 +1,9 @@
+require 'rake'
+require 'rake/testtask'
+
+task :default do
+  # just run tests, nothing fancy
+  Dir["tests/**/*.rb"].sort.each { |test|  load test }
+end
+
+

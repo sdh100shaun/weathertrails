@@ -1,0 +1,6 @@
+development:
+  sessions:
+    default:
+      database: test
+      hosts:
+        - 172.16.0.1:27017

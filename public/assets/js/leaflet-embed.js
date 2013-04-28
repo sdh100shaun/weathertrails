@@ -51,11 +51,11 @@ function initmap(location) {
 function get_popup(coords)
 {
 	console.log(coords);
-	$.getJSON( '/place/'+coords[0]+'/'+coords[1], function(data) {
+	$.getJSON( '/weather/'+coords[0]+'/'+coords[1], function(data) {
   		
-  		var template = "<h1>{{country}}</h1><p>{{woeid}}</p>";
+  		var template = "<object data=\"/assets/SVG/{{svg}}\" type=\"image/svg+xml\"><img src=\"/assets/img/logo.png\" /></object><p>{{text}}</p><p>{{temp}}<sup>0</sup>F</p>";
 
-    	var html = Mustache.to_html(template, data.query.results.Result);
+    	var html = Mustache.to_html(template, data);
     	console.log(html);
     	marker.bindPopup(html).openPopup();
     	//map.panTo(new L.LatLng(coords[0], coords[1]) );

@@ -1,6 +1,6 @@
 development:
   sessions:
     default:
-      database: test
+      database: weather
       hosts:
         - 172.16.0.1:27017

@@ -62,9 +62,9 @@ class WeatherTrail < Sinatra::Base
         lng = params[:lon]
         weather = Weather.new(lat,lng)
         weather.get_weather
+        code_info = Weather.where(code:weather.code)[0]
 
-        weather.temp
-
+        {"temp"=>weather.temp,"text"=>weather.text,"svg"=>code_info['svg'].to_s}.to_json
     end
 
 end

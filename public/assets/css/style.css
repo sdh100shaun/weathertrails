@@ -59,10 +59,12 @@ strong { font-weight: bold; }
 .header a.brand {
     display: inline-block;
     /*text-indent: -9999px;*/
+    font-family:'Droid Sans';
     width: 280px;
     height: 63px;
     padding: 30px 95px;
     background: url(../img/logo.png) 20px center no-repeat;
+    font-size:130%;
 }
 
 .header ul.nav {
@@ -808,8 +810,9 @@ ul.portfolio-img li {
 .filter-portfolio a#active-imgs:hover { color: #5d5d5d; }
 
 #map{width:90%;margin:auto;min-height:800px;border:solid 14px #f2f2f2;margin-bottom:2em;}
-#itinery{width: 50%;text-align: left;margin:auto;}
-
+#itinery{width: 50%;text-align: center;margin:auto;}
+#itinery ul {width: 80%;text-align: left;margin-bottom:3em;list-style: none;}
+#itinery a {margin-bottom: 2em;}
 /* ----- Media queries ----- */
 
 @media (min-width: 980px) and (max-width: 1200px) {

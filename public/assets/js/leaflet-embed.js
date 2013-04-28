@@ -101,7 +101,7 @@ function add_to_itinery(coords,weather)
 				"temp":weather.temp,
 				"text":weather.text
 		};
-		var template = "<li>{{county}}({{place}}) {{country}}- {{temp}} - {{text}}</li>";
+		var template = "<li><span class=\"label label-info\">Info</span>&nbsp; {{county}}({{place}}) {{country}}- {{temp}} - {{text}}</li>";
 
 		var html = Mustache.to_html(template, results);
 		$("#itinery ul").append(html);

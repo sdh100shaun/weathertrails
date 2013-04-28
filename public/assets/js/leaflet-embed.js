@@ -3,6 +3,7 @@ var ajaxRequest;
 var plotlist;
 var plotlayers=[];
 var marker; 
+var pointList=[];
 
 function get_location() {
   if (Modernizr.geolocation) {
@@ -18,6 +19,7 @@ function initmap(location) {
 
 	
 	coords = [location.coords.latitude,location.coords.longitude];
+	add_line_point(coords);
 	map = new L.Map('map');
 
 	// create the tile layer with correct attribution
@@ -31,7 +33,7 @@ function initmap(location) {
 
 	// add a marker in the given location, attach some popup content to it and open the popup
 		
-	 
+	
 
 	marker = L.marker(coords,{"draggable":true});
 
@@ -39,13 +41,31 @@ function initmap(location) {
 		var currentMarker = e.target;  
     	var result = currentMarker.getLatLng();
     	console.log(result);
+    	add_line_point([result.lat,result.lng]);
     	get_popup([result.lat,result.lng]);
+    	draw_line(pointList);
 	})
 	
 	marker.addTo(map)
     
 
     get_popup(coords);
+}
+
+function add_line_point(coords)
+{
+	pointList.push(new L.LatLng(coords[0],coords[1]));
+}
+
+function draw_line(pointList)
+{
+
+var polyline = new L.Polyline(pointList, {
+	color: 'red',
+	weight: 3,
+	opacity: 0.5,
+	smoothFactor: 1
+	}).addTo(map);
 }
 
 function get_popup(coords)
@@ -58,7 +78,8 @@ function get_popup(coords)
     	var html = Mustache.to_html(template, data);
     	console.log(html);
     	marker.bindPopup(html).openPopup();
-    	//map.panTo(new L.LatLng(coords[0], coords[1]) );
+    	map.panTo(new L.LatLng(coords[0], coords[1]) );
+    	add_to_itinery(coords,data)
 	})
 	.done(function() { console.log( "second success" ); })
 	.fail(function() { console.log( "error" ); })
@@ -68,3 +89,21 @@ function get_popup(coords)
 
 }
 
+function add_to_itinery(coords,weather)
+{
+	$.getJSON( '/place/'+coords[0]+'/'+coords[1], function(data) {
+	
+		console.log(data);
+		results = {
+				"place":data.query.results.Result.name,
+				"country":data.query.results.Result.country,
+				"county":data.query.results.Result.county,
+				"temp":weather.temp,
+				"text":weather.text
+		};
+		var template = "<li>{{county}}({{place}}) {{country}}- {{temp}} - {{text}}</li>";
+
+		var html = Mustache.to_html(template, results);
+		$("#itinery ul").append(html);
+	});
+}
